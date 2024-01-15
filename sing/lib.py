@@ -8,6 +8,8 @@ import dns.exception
 import dns.rdatatype
 import dns.resolver
 
+import yaml
+
 
 def b64decode(b: str) -> bytes:
     while len(b) % 4 != 0:
@@ -162,3 +164,19 @@ def gen_rules(name):
                 domain = match.group(2)
                 rules[0]["domain_suffix"].append("." + domain)
     return rules
+
+
+def gen_clash_rules(name):
+    with open(f"run/clash-{name}.txt") as f:
+        clash_rules = yaml.safe_load(f)
+    if "cidr" in name:
+        return [{"ip_cidr": clash_rules.get("payload", [])}]
+    else:
+        domain = []
+        domain_suffix = []
+        for payload in clash_rules.get("payload", []):
+            if payload.startswith("+"):
+                domain_suffix.append(payload[1:])
+            else:
+                domain.append(payload)
+        return [{"domain": domain}, {"domain_suffix": domain_suffix}]

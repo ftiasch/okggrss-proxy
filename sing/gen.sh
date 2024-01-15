@@ -6,8 +6,8 @@ if [[ "$1" == "down" ]]; then
 	python cli.py down
 fi
 python cli.py gen
-sudo sing-box merge /etc/sing-box/custom.json -c config.template.json -c run/config.json
-for f in ad-block cn; do
-	sudo sing-box rule-set compile -o /etc/sing-box/$f.srs run/$f.json
+for rs in $(python cli.py clash_rules); do
+	sudo sing-box rule-set compile -o /etc/sing-box/clash-$rs.srs run/clash-$rs.json
 done
+sudo sing-box merge /etc/sing-box/custom.json -c config.template.json -c run/config.json -c run/rule_set.json
 sudo systemctl restart sing-box@custom
