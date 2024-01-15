@@ -179,4 +179,9 @@ def gen_clash_rules(name):
                 domain_suffix.append(payload[1:])
             else:
                 domain.append(payload)
-        return [{"domain": domain}, {"domain_suffix": domain_suffix}]
+        res = []
+        if domain:
+            res.append({"domain": domain})
+        if domain_suffix:
+            res.append({"domain_suffix": domain_suffix})
+        return res

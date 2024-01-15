@@ -44,7 +44,7 @@
         "server": "dns_direct"
       },
       {
-        "rule_set": "ad-block",
+        "rule_set": "clash-reject",
         "server": "dns_refused",
         "disable_cache": true
       },
@@ -57,8 +57,13 @@
       },
       {
         "query_type": "CNAME",
-        "rule_set": "cn",
-        "server": "dns_direct"
+        "rule_set": "clash-tld-not-cn",
+        "server": "dns_proxy"
+      },
+      {
+        "query_type": "CNAME",
+        "rule_set": "clash-gfw",
+        "server": "dns_proxy"
       },
       {
         "query_type": "CNAME",
@@ -118,10 +123,6 @@
         "outbound": "dns-out"
       },
       {
-        "rule_set": "ad-block",
-        "outbound": "block"
-      },
-      {
         "type": "logical",
         "mode": "or",
         "rules": [
@@ -144,40 +145,27 @@
         "outbound": "direct"
       },
       {
+        "rule_set": "clash-reject",
+        "outbound": "block"
+      },
+      {
         "type": "logical",
         "mode": "or",
         "rules": [
           {
-            "rule_set": "geoip-cn"
+            "rule_set": "clash-tld-not-cn"
           },
           {
-            "rule_set": "cn"
+            "rule_set": "clash-gfw"
+          },
+          {
+            "rule_set": "clash-telegramcidr"
           }
         ],
-        "outbound": "direct"
+        "outbound": "proxy"
       }
     ],
-    "rule_set": [
-      {
-        "type": "remote",
-        "tag": "geoip-cn",
-        "format": "binary",
-        "url": "https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/geoip-cn.srs"
-      },
-      {
-        "type": "local",
-        "tag": "ad-block",
-        "format": "binary",
-        "path": "/etc/sing-box/ad-block.srs"
-      },
-      {
-        "type": "local",
-        "tag": "cn",
-        "format": "binary",
-        "path": "/etc/sing-box/cn.srs"
-      }
-    ],
-    "final": "proxy",
+    "final": "direct",
     "auto_detect_interface": true
   },
   "experimental": {
