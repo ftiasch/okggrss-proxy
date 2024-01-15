@@ -149,23 +149,39 @@
         "outbound": "block"
       },
       {
-        "type": "logical",
-        "mode": "or",
-        "rules": [
-          {
-            "rule_set": "clash-tld-not-cn"
-          },
-          {
-            "rule_set": "clash-gfw"
-          },
-          {
-            "rule_set": "clash-telegramcidr"
-          }
-        ],
+        "rule_set": "clash-icloud",
+        "outbound": "direct"
+      },
+      {
+        "rule_set": "clash-apple",
+        "outbound": "direct"
+      },
+      {
+        "rule_set": "clash-proxy",
         "outbound": "proxy"
+      },
+      {
+        "rule_set": "clash-direct",
+        "outbound": "direct"
+      },
+      {
+        "rule_set": "clash-lancidr",
+        "outbound": "direct"
+      },
+      {
+        "rule_set": "clash-cncidr",
+        "outbound": "direct"
+      },
+      {
+        "rule_set": "clash-telegramcidr",
+        "outbound": "proxy"
+      },
+      {
+        "rule_set": "geoip-cn",
+        "outbound": "direct"
       }
     ],
-    "final": "direct",
+    "final": "proxy",
     "auto_detect_interface": true
   },
   "experimental": {
